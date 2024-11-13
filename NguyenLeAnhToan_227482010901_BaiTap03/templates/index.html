@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Học Sinh</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Quản Lý Học Sinh</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Đăng xuất</a>
+        </div>
+        <form action="{{ url_for('add') }}" method="POST" class="mb-4">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" name="name" class="form-control" placeholder="Tên">
+                </div>
+                <div class="col">
+                    <input type="text" name="age" class="form-control" placeholder="Tuổi">
+                </div>
+                <div class="col">
+                    <input type="text" name="gender" class="form-control" placeholder="Giới Tính">
+                </div>
+                <div class="col">
+                    <input type="text" name="major" class="form-control" placeholder="Ngành">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Thêm Học Sinh</button>
+                </div>
+            </div>
+        </form>
+        <form action="{{ url_for('search') }}" method="POST" class="mb-4">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" name="search_term" class="form-control" placeholder="Tìm Kiếm">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-secondary">Tìm Kiếm</button>
+                </div>
+            </div>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-info">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Tuổi</th>
+                    <th>Giới Tính</th>
+                    <th>Ngành</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student[0] }}</td>
+                        <td>{{ student[1] }}</td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[3] }}</td>
+                        <td>{{ student[4] }}</td>
+                        <td>
+                            <a href="{{ url_for('update', student_id=student[0]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="{{ url_for('delete', student_id=student[0]) }}" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
